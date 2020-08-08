@@ -9,6 +9,7 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const login = require('./routes/Authentication/login');
 const callback = require('./routes/Authentication/callback')
 const refreshToken = require('./routes/Authentication/refresh_token')
+const axios = require('axios')
 
 
 let spotifyApi = new SpotifyWebApi({
@@ -39,16 +40,22 @@ app.get('/getAlbums', (req, res) => {
 })
 
 
-app.get('/getSongs', (req, res) => {
-     spotifyApi.searchTracks('track:Alright artist:Kendrick Lamar')
-          .then((data) => {
-               res.send(data.body)
-               console.log('Search tracks by "Alright" in the track name and "Kendrick Lamar" in the artist name', data.body);
-          }, (err) => {
-               res.send(err)
-               console.log('Something went wrong!', err);
-          });
+app.get('/getSongs', async (req, res) => {
+     let allTopSongs = [];
 
+     const topArtistsResponse = await spotifyApi.getMyTopArtists({ time_range: "long_term", limit: 5, offset: 0 })
+     const allArtistsIds = topArtistsResponse.body.items.map((artistsInfo) => {
+          return artistsInfo.id
+     })
+
+     allArtistsIds.forEach(async (id) => {
+          const artistsTopSongsResponse = await spotifyApi.getArtistTopTracks(id, 'US')
+          artistsTopSongsResponse.body.tracks.forEach((track) => {
+               allTopSongs.push(track.name)
+               console.log(track.name)
+          })
+     })
+     res.sendStatus(200)
 })
 
 
