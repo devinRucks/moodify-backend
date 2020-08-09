@@ -44,16 +44,22 @@ app.get('/getAlbums', (req, res) => {
           })
 })
 
-
+/** TODO:
+ * (1) Change this to post request. 
+ * (2) Client will send the mood settings, this route will recieve them and use it to filter
+ * out the current list of all the songs.
+ * (3) It will send the client back the filtered list, aka, the custom playlist for their mood
+ * (4) Don't forget to include things like song image, artist info, etc. to make UI nice.
+ * 
+ * This route will also be used for the weather side of the application.
+ */
 app.get('/getSongs', async (req, res) => {
-
-
+     // ESlint says that await has no effect but it does. 
+     // I think it's because I have the functions return an array instead of a promise, 
+     // but any async function implicitly returns a promise. Might want to come back to this. 
      const allArtistIds = await getArtistIds(spotifyApi, "long_term", 5, 0);
      const allSongIds = await getSongIds(spotifyApi, allArtistIds, 'US')
      res.send(allSongIds)
-
-     // res.sendStatus(200)
-
 })
 
 
