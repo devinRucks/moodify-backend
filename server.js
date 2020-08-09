@@ -9,6 +9,7 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const login = require('./routes/Authentication/login');
 const callback = require('./routes/Authentication/callback')
 const refreshToken = require('./routes/Authentication/refresh_token')
+const getArtistIds = require('./utils/getArtistIds')
 const axios = require('axios')
 
 
@@ -43,12 +44,14 @@ app.get('/getAlbums', (req, res) => {
 app.get('/getSongs', async (req, res) => {
      let allTopSongs = [];
 
-     const topArtistsResponse = await spotifyApi.getMyTopArtists({ time_range: "long_term", limit: 5, offset: 0 })
-     const allArtistsIds = topArtistsResponse.body.items.map((artistsInfo) => {
-          return artistsInfo.id
-     })
+     const allArtistIds = getArtistIds(spotifyApi, "long-range", 5, 0)
 
-     allArtistsIds.forEach(async (id) => {
+     // const topArtistsResponse = await spotifyApi.getMyTopArtists({ time_range: "long_term", limit: 5, offset: 0 })
+     // const allArtistsIds = topArtistsResponse.body.items.map((artistsInfo) => {
+     //      return artistsInfo.id
+     // })
+
+     allArtistIds.forEach(async (id) => {
           const artistsTopSongsResponse = await spotifyApi.getArtistTopTracks(id, 'US')
           artistsTopSongsResponse.body.tracks.forEach((track) => {
                allTopSongs.push(track.name)
