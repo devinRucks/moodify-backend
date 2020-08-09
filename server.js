@@ -15,6 +15,7 @@ const axios = require('axios')
 const getArtistIds = require('./utils/getArtistIds')
 const getTrackIds = require('./utils/getTrackIds')
 const getAudioFeatures = require('./utils/getAudioFeatures')
+const getTrackDetails = require('./utils/getTrackDetails')
 
 
 
@@ -97,8 +98,11 @@ app.get('/getSongs', async (req, res) => {
      const allArtistIds = await getArtistIds(spotifyApi, "long_term", 5, 0);
      const allTrackIds = await getTrackIds(spotifyApi, allArtistIds, 'US')
      const allAudioFeatures = await getAudioFeatures(spotifyApi, allTrackIds)
+     const allTrackDetails = await getTrackDetails(spotifyApi, allAudioFeatures, allTrackIds)
      console.log(allAudioFeatures)
-     res.send(allTrackIds)
+     console.log(allTrackDetails)
+     res.sendStatus(200)
+     // res.send(allTrackIds)
 })
 
 

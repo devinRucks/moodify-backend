@@ -1,21 +1,21 @@
 /**
  * Gets the ids of the artist's top tracks
  * @param {Object} spotifyApi SpotifyWebApi object that was includes the clientId, clientSecret, and redirectUri
- * @param {Array} ids The ids of the user's top artists
+ * @param {Array} artistIds The ids of the user's top artists
  * @param {String} country An ISO 3166-1 alpha-2 country code 
  * @return {Array} The array of track ids
  */
-const getTrackIds = async (spotifyApi, ids, country) => {
-     let allTrackIds = [];
+const getTrackIds = async (spotifyApi, artistIds, country) => {
+     let allTopTracks = [];
 
-     await asyncForEach(ids, async (id) => {
-          const artistsTopTracksResponse = await spotifyApi.getArtistTopTracks(id, country)
-          artistsTopTracksResponse.body.tracks.forEach((track) => {
-               allTrackIds.push(track.id)
+     await asyncForEach(artistIds, async (id) => {
+          const artistTopTracks = await spotifyApi.getArtistTopTracks(id, country)
+          artistTopTracks.body.tracks.forEach((track) => {
+               allTopTracks.push(track.id)
           })
      })
 
-     return allTrackIds;
+     return allTopTracks;
 
 };
 
