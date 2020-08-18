@@ -99,10 +99,7 @@ app.get('/getSongs', async (req, res) => {
      const allTrackIds = await getTrackIds(spotifyApi, allArtistIds, 'US')
      const allAudioFeatures = await getAudioFeatures(spotifyApi, allTrackIds)
      const allTrackDetails = await getTrackDetails(spotifyApi, allAudioFeatures, allTrackIds)
-     console.log(allAudioFeatures)
-     console.log(allTrackDetails)
-     res.sendStatus(200)
-     // res.send(allTrackIds)
+     res.send(allTrackDetails)
 })
 
 
