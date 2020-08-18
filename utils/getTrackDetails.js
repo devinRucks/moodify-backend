@@ -7,21 +7,27 @@
  */
 const getTrackDetails = async (spotifyApi, allAudioFeatures, allTrackIds) => {
 
-     const allInfo = await spotifyApi.getTracks(allTrackIds)
+     try {
+          console.log(allTrackIds.length)
+          // Maximum of 50 ids
+          const allInfo = await spotifyApi.getTracks(allTrackIds)
 
-     const filteredTrackInfo = allInfo.body.tracks.map((track, i) => {
-          const trackInfo = {
-               track: track.name,
-               artist: track.album.artists[0].name,
-               album_cover: track.album.images[2].url,
-               id: track.id
-          }
-          return trackInfo
-     })
+          const filteredTrackInfo = allInfo.body.tracks.map((track, i) => {
+               const trackInfo = {
+                    track: track.name,
+                    artist: track.album.artists[0].name,
+                    album_cover: track.album.images[2].url,
+                    id: track.id
+               }
+               return trackInfo
+          })
 
-     mergeArrayObjects(allAudioFeatures, filteredTrackInfo)
+          mergeArrayObjects(allAudioFeatures, filteredTrackInfo)
 
-     return allAudioFeatures;
+          return allAudioFeatures;
+     } catch (err) {
+          console.log(`Error from getTrackDetails: ${err}`)
+     }
 };
 
 

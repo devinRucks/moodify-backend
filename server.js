@@ -35,16 +35,16 @@ app.use('/callback', callback(spotifyApi));
 app.use('/refresh_token', refreshToken);
 
 
-app.get('/getAlbums', (req, res) => {
-     spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', { limit: 10, offset: 0 })
-          .then((data) => {
-               res.send(data.body)
-               console.log('Artist albums', data.body);
-          }, (err) => {
-               res.send(err)
-               console.error(err);
-          })
-})
+// app.get('/getAlbums', (req, res) => {
+//      spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', { limit: 10, offset: 0 })
+//           .then((data) => {
+//                res.send(data.body)
+//                console.log('Artist albums', data.body);
+//           }, (err) => {
+//                res.send(err)
+//                console.error(err);
+//           })
+// })
 
 /** TODO:
  * (1) Change this to post request. 
@@ -94,12 +94,17 @@ app.get('/getAlbums', (req, res) => {
 app.get('/getSongs', async (req, res) => {
      // ESlint says that await has no effect but it does. 
      // I think it's because I have the functions return an array instead of a promise, 
-     // but any async function implicitly returns a promise. Might want to come back to this. 
-     const allArtistIds = await getArtistIds(spotifyApi, "long_term", 5, 0);
-     const allTrackIds = await getTrackIds(spotifyApi, allArtistIds, 'US')
-     const allAudioFeatures = await getAudioFeatures(spotifyApi, allTrackIds)
-     const allTrackDetails = await getTrackDetails(spotifyApi, allAudioFeatures, allTrackIds)
-     res.send(allTrackDetails)
+     // but any async function implicitly returns a promise. Might want to come back to this.
+
+     try {
+          const allArtistIds = await getArtistIds(spotifyApi, "long_term", 5, 0);
+          const allTrackIds = await getTrackIds(spotifyApi, allArtistIds, 'US')
+          const allAudioFeatures = await getAudioFeatures(spotifyApi, allTrackIds)
+          const allTrackDetails = await getTrackDetails(spotifyApi, allAudioFeatures, allTrackIds)
+          res.send(allTrackDetails)
+     } catch (err) {
+          console.log(err)
+     }
 })
 
 

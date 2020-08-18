@@ -6,26 +6,31 @@
  */
 const getAudioFeatures = async (spotifyApi, allTrackIds) => {
 
-     const allAudioFeatures = await spotifyApi.getAudioFeaturesForTracks(allTrackIds)
+     try {
+          // Maximum of 100 ids
+          const allAudioFeatures = await spotifyApi.getAudioFeaturesForTracks(allTrackIds)
 
-     const filteredAudioFeatures = allAudioFeatures.body.audio_features.map((track) => {
-          const trackAudioFeatures = {
-               danceability: track.danceability,
-               energy: track.energy,
-               key: track.key,
-               loudness: track.loudness,
-               mode: track.mode,
-               speechiness: track.speechiness,
-               acousticness: track.acousticness,
-               liveness: track.liveness,
-               valence: track.valence,
-               tempo: track.tempo,
-               id: track.id
-          }
-          return trackAudioFeatures
-     })
+          const filteredAudioFeatures = allAudioFeatures.body.audio_features.map((track) => {
+               const trackAudioFeatures = {
+                    danceability: track.danceability,
+                    energy: track.energy,
+                    key: track.key,
+                    loudness: track.loudness,
+                    mode: track.mode,
+                    speechiness: track.speechiness,
+                    acousticness: track.acousticness,
+                    liveness: track.liveness,
+                    valence: track.valence,
+                    tempo: track.tempo,
+                    id: track.id
+               }
+               return trackAudioFeatures
+          })
 
-     return filteredAudioFeatures;
+          return filteredAudioFeatures;
+     } catch (err) {
+          console.log(`Error from getAudioFeatures: ${err}`)
+     }
 };
 
 // /**

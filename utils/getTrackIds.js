@@ -9,10 +9,15 @@ const getTrackIds = async (spotifyApi, artistIds, country) => {
      let allTopTracks = [];
 
      await asyncForEach(artistIds, async (id) => {
-          const artistTopTracks = await spotifyApi.getArtistTopTracks(id, country)
-          artistTopTracks.body.tracks.forEach((track) => {
-               allTopTracks.push(track.id)
-          })
+          try {
+
+               const artistTopTracks = await spotifyApi.getArtistTopTracks(id, country)
+               artistTopTracks.body.tracks.forEach((track) => {
+                    allTopTracks.push(track.id)
+               })
+          } catch (err) {
+               console.log(`Error from getTrackIds: ${err}`)
+          }
      })
 
      return allTopTracks;

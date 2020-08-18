@@ -8,15 +8,20 @@
  * @return {Array} The array of artist ids
  */
 const getArtistIds = async (spotifyApi, time_range, limit, offset) => {
-     const topArtists = await spotifyApi.getMyTopArtists({
-          time_range: time_range, limit: limit, offset: offset
-     })
+     try {
+          const topArtists = await spotifyApi.getMyTopArtists({
+               time_range: time_range, limit: limit, offset: offset
+          })
 
-     const allArtistIds = topArtists.body.items.map((artistsInfo) => {
-          return artistsInfo.id
-     })
+          const allArtistIds = topArtists.body.items.map((artistsInfo) => {
+               return artistsInfo.id
+          })
 
-     return allArtistIds;
+          return allArtistIds;
+     } catch (err) {
+          console.log(`Error from getArtistsIds: ${err}`)
+     }
+
 };
 
 module.exports = getArtistIds;
