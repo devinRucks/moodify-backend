@@ -97,7 +97,7 @@ app.get('/getSongs', async (req, res) => {
      // but any async function implicitly returns a promise. Might want to come back to this.
 
      try {
-          const allArtistIds = await getArtistIds(spotifyApi, "long_term", 15, 0);
+          const allArtistIds = await getArtistIds(spotifyApi, "long_term", 50, 0);
           const allTrackIds = await getTrackIds(spotifyApi, allArtistIds, 'US')
           const allAudioFeatures = await getAudioFeatures(spotifyApi, allTrackIds)
           const allTrackDetails = await getTrackDetails(spotifyApi, allAudioFeatures, allTrackIds)
