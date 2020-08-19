@@ -28,7 +28,7 @@ const getTrackIds = async (spotifyApi, artistIds, country) => {
      // a 2D array with the width of 50.
      allTopTracks.convertTo2D(50)
 
-     console.log(allTopTracks)
+     // console.log(allTopTracks)
      return allTopTracks;
 
 };

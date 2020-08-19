@@ -7,20 +7,33 @@
  */
 const getTrackDetails = async (spotifyApi, allAudioFeatures, allTrackIds) => {
 
-     try {
-          console.log(allTrackIds.length)
-          // Maximum of 50 ids
-          const allInfo = await spotifyApi.getTracks(allTrackIds)
+     let allInfo = [];
+     let filteredTrackInfo = [];
 
-          const filteredTrackInfo = allInfo.body.tracks.map((track, i) => {
-               const trackInfo = {
-                    track: track.name,
-                    artist: track.album.artists[0].name,
-                    album_cover: track.album.images[2].url,
-                    id: track.id
-               }
-               return trackInfo
+     try {
+          // Maximum of 50 ids
+          // for (let i = 0; i < allTrackIds.length; i++) {
+          //      allInfo.push(await spotifyApi.getTracks(allTrackIds[i]))
+          // }
+
+          await Promise.all(allTrackIds.map(async trackIdArray => {
+               const response = await spotifyApi.getTracks(trackIdArray)
+               allInfo.push(response)
+          }));
+
+          allInfo.forEach((response) => {
+               response.body.tracks.forEach((track) => {
+                    filteredTrackInfo.push({
+                         track: track.name,
+                         artist: track.album.artists[0].name,
+                         album_cover: track.album.images[2].url,
+                         id: track.id
+                    })
+               })
           })
+
+          console.log(allAudioFeatures)
+          console.log(filteredTrackInfo)
 
           mergeArrayObjects(allAudioFeatures, filteredTrackInfo)
 
@@ -33,14 +46,18 @@ const getTrackDetails = async (spotifyApi, allAudioFeatures, allTrackIds) => {
 
 /**
  * If the id's match, add the track name from arr2 to arr1.
+ * This is a slow way to do it. Might want to implement an algorithm
  */
 const mergeArrayObjects = (arr1, arr2) => {
-     arr1.forEach((track, i) => {
-          if (track.id === arr2[i].id) {
-               track.artist = arr2[i].artist;
-               track.album_cover = arr2[i].album_cover;
-               track.track = arr2[i].track
-          }
+
+     arr1.forEach((track) => {
+          arr2.forEach((arr2Track, i) => {
+               if (track.id === arr2Track.id) {
+                    track.artist = arr2Track.artist;
+                    track.album_cover = arr2Track.album_cover;
+                    track.track = arr2Track.track
+               }
+          })
      })
 }
 
