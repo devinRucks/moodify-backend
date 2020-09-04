@@ -42,7 +42,7 @@ const wrapper = (spotifyApi) => {
 
                          spotifyApi.setAccessToken(process.env.ACCESS_TOKEN);
 
-                         res.redirect('http://localhost:3000/home')
+                         res.redirect('http://localhost:3000/loading')
                     } else {
                          res.redirect('/#' +
                               querystring.stringify({
