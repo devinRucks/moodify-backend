@@ -15,7 +15,7 @@ const wrapper = (spotifyApi) => {
           let storedState = req.cookies ? req.cookies[stateKey] : null;
 
           if (state === null || state !== storedState) {
-               res.redirect('/#' +
+               res.redirect('http://localhost:3000/login' +
                     querystring.stringify({
                          error: 'state_mismatch'
                     }));
@@ -42,9 +42,9 @@ const wrapper = (spotifyApi) => {
 
                          spotifyApi.setAccessToken(process.env.ACCESS_TOKEN);
 
-                         res.redirect('http://localhost:3000/mood')
+                         res.redirect('http://localhost:3000/')
                     } else {
-                         res.redirect('/#' +
+                         res.redirect('http://localhost:3000/login' +
                               querystring.stringify({
                                    error: 'invalid_token'
                               }));
