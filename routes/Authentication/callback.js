@@ -29,7 +29,7 @@ const wrapper = (spotifyApi) => {
                          grant_type: 'authorization_code'
                     },
                     headers: {
-                         'Authorization': 'Basic ' + (new Buffer(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET).toString('base64'))
+                         'Authorization': 'Basic ' + (new Buffer.from(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET).toString('base64'))
                     },
                     json: true
                };
