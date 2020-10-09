@@ -49,6 +49,7 @@ app.get('/getSongs', async (req, res) => {
           res.send(allTrackDetails)
      } catch (err) {
           console.log(err)
+          // res.sendStatus(200)
      }
 })
 

@@ -8,7 +8,7 @@ const jsonParser = bodyParser.json();
 router.route('/')
      .post(jsonParser, async (req, res) => {
           console.log("IN SERVER");
-          const url = `http://api.weatherstack.com/current?access_key=${process.env.ACCESS_KEY}&query=${req.body.lat}, ${req.body.long}`;
+          const url = `http://api.weatherstack.com/current?access_key=${process.env.ACCESS_KEY}&units=f&query=${req.body.lat}, ${req.body.long}`;
 
           try {
                const response = await axios.get(url);
@@ -19,7 +19,9 @@ router.route('/')
                     'temp': data.current.temperature,
                     'feelslike': data.current.feelslike,
                     'description': data.current.weather_descriptions[0],
-                    'is_day': data.current.is_day
+                    'is_day': data.current.is_day,
+                    'wind_speed': data.current.wind_speed,
+                    'wind_dir': data.current.wind_dir
                })
           } catch (err) {
                console.log(err)
